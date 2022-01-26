@@ -3,8 +3,6 @@ extern crate serde;
 extern crate serde_derive;
 extern crate serde_json;
 
-use std::io::Error;
-use serde_json::Value;
 
 #[derive(Debug, Serialize,Deserialize)]
 pub struct SearchResponse<T, V = Vec<String>> {
