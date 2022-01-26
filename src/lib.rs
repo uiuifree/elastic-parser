@@ -4,34 +4,41 @@ extern crate serde_derive;
 extern crate serde_json;
 
 
-#[derive(Debug, Serialize,Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SearchResponse<T, V = Vec<String>> {
-    took: i8,
-    hits: Hits<T>,
+    pub took: i8,
+    pub hits: Hits<T>,
     #[serde(default)]
-    aggregations: V,
+    pub aggregations: V,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct HitsTotal {
-    value: usize,
-    relation: String,
+    #[serde(default)]
+    pub value: usize,
+    #[serde(default)]
+    pub relation: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Hits<T> {
-    total: HitsTotal,
-    max_score: f32,
-    hits: Vec<Hit<T>>,
+    pub total: HitsTotal,
+    #[serde(default)]
+    pub max_score: f32,
+    pub hits: Vec<Hit<T>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Hit<T> {
-    _index: String,
-    _type: String,
-    _id: String,
-    _score: f32,
-    _source: T,
+    #[serde(default)]
+    pub _index: String,
+    #[serde(default)]
+    pub _type: String,
+    #[serde(default)]
+    pub _id: String,
+    #[serde(default)]
+    pub _score: f32,
+    pub _source: T,
 }
 
 use serde::de;
@@ -40,5 +47,5 @@ pub fn parse<'a, T>(s: &'a str) -> T
     where
         T: de::Deserialize<'a>,
 {
-     serde_json::from_str(s).expect("")
+    serde_json::from_str(s).expect("")
 }
