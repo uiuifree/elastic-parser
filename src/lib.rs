@@ -28,7 +28,7 @@ pub struct Hits<T> {
     pub hits: Vec<Hit<T>>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Hit<T> {
     #[serde(default)]
     pub _index: String,
