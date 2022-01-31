@@ -6,7 +6,8 @@ extern crate serde_json;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SearchResponse<T, V = Vec<String>> {
-    pub took: i8,
+    #[serde(default)]
+    pub took: usize,
     pub hits: Hits<T>,
     #[serde(default)]
     pub aggregations: V,
@@ -23,8 +24,8 @@ pub struct HitsTotal {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Hits<T> {
     pub total: HitsTotal,
-    #[serde(default)]
-    pub max_score: f32,
+    // #[serde(default)]
+    // pub max_score: f32,
     pub hits: Vec<Hit<T>>,
 }
 
