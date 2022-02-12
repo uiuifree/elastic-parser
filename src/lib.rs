@@ -23,11 +23,27 @@ pub struct HitsTotal {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Hits<T> {
-    pub total: HitsTotal,
-    // #[serde(default)]
-    // pub max_score: f32,
-    pub hits: Vec<Hit<T>>,
+    pub total: Option<HitsTotal>,
+    pub max_score: Option<f32>,
+    pub hits: Option<Vec<Hit<T>>>,
 }
+
+// impl<T> Hits<T> {
+//     fn total(&self) -> HitsTotal {
+//         return match self.total.clone() {
+//             Some(v) => { v }
+//             None => {
+//                 HitsTotal {
+//                     value: 0,
+//                     relation: "".to_string(),
+//                 }
+//             }
+//         };
+//     }
+//     fn max_score(&self) -> f32 {
+//         self.max_score.unwrap_or(0.0)
+//     }
+// }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Hit<T> {
