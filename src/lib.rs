@@ -5,7 +5,7 @@ extern crate serde_json;
 
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SearchResponse<T, V = Vec<String>> {
+pub struct SearchResponse<T, V = Value> {
     #[serde(default)]
     pub _scroll_id: String,
     #[serde(default)]
@@ -61,6 +61,7 @@ pub struct Hit<T> {
 }
 
 use serde::de;
+use serde_json::Value;
 
 pub fn parse<'a, T>(s: &'a str) -> T
     where
