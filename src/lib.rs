@@ -69,3 +69,11 @@ pub fn parse<'a, T>(s: &'a str) -> T
 {
     serde_json::from_str(s).expect("")
 }
+
+
+impl<T> SearchResponse<T> where T: std::clone::Clone{
+    pub fn to_hit(&self) -> Vec<Hit<T>> {
+        let hits = self.hits.clone();
+         hits.hits.unwrap_or_default().to_vec()
+    }
+}
