@@ -15,7 +15,7 @@ pub struct SearchResponse<T, V = Value> {
     pub aggregations: V,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize,Clone)]
 pub struct HitsTotal {
     #[serde(default)]
     pub value: usize,
@@ -23,7 +23,7 @@ pub struct HitsTotal {
     pub relation: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize,Clone)]
 pub struct Hits<T> {
     pub total: Option<HitsTotal>,
     pub max_score: Option<f32>,
