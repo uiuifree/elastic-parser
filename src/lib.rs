@@ -3,7 +3,6 @@ extern crate serde;
 extern crate serde_derive;
 extern crate serde_json;
 
-
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SearchResponse<T, V = Value> {
     #[serde(default)]
@@ -15,7 +14,7 @@ pub struct SearchResponse<T, V = Value> {
     pub aggregations: V,
 }
 
-#[derive(Debug, Serialize, Deserialize,Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct HitsTotal {
     #[serde(default)]
     pub value: usize,
@@ -23,7 +22,7 @@ pub struct HitsTotal {
     pub relation: String,
 }
 
-#[derive(Debug, Serialize, Deserialize,Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Hits<T> {
     pub total: Option<HitsTotal>,
     pub max_score: Option<f32>,
@@ -64,16 +63,18 @@ use serde::de;
 use serde_json::Value;
 
 pub fn parse<'a, T>(s: &'a str) -> T
-    where
-        T: de::Deserialize<'a>,
+where
+    T: de::Deserialize<'a>,
 {
     serde_json::from_str(s).expect("")
 }
 
-
-impl<T> SearchResponse<T> where T: std::clone::Clone{
+impl<T> SearchResponse<T>
+where
+    T: std::clone::Clone,
+{
     pub fn to_hit(&self) -> Vec<Hit<T>> {
         let hits = self.hits.clone();
-         hits.hits.unwrap_or_default().to_vec()
+        hits.hits.unwrap_or_default().to_vec()
     }
 }
