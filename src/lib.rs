@@ -59,6 +59,25 @@ pub struct Hit<T> {
     pub _source: T,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Doc<T> {
+    pub _index: String,
+    pub _type: String,
+    pub _id: String,
+    // pub found:bool,
+    // pub _version: Option<usize>,
+    // pub _seq_no: Option<usize>,
+    // pub _primary_term: Option<usize>,
+    pub _source: Option<T>,
+}
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Shards{
+pub total : Option<usize>,
+pub successful : Option<usize>,
+pub failed : Option<usize>,
+}
+
+
 use serde::de;
 use serde_json::Value;
 
