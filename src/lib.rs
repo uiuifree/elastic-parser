@@ -14,19 +14,34 @@ pub struct SearchResponse<T, V = Value> {
     pub aggregations: Option<V>,
 }
 
-impl <T, V >SearchResponse<T, V> {
-    pub fn sources(&self)->Vec<&T>{
-        if self.hits.is_none(){
-            return  vec![];
+impl<T, V> SearchResponse<T, V> {
+    pub fn total_value(&self) -> usize {
+        if self.hits.is_none() {
+            return 0;
         }
+        if self.hits.as_ref().is_none(){
+            return 0;
+        }
+
         let hits = self.hits.as_ref().unwrap();
-        if hits.hits.is_none(){
+        if hits.total.as_ref().is_none(){
+            return 0;
+        }
+        let total = hits.total.as_ref().unwrap();
+        total.value.unwrap_or_default()
+    }
+    pub fn sources(&self) -> Vec<&T> {
+        if self.hits.is_none() {
             return vec![];
         }
-        let mut  data  = vec![];
+        let hits = self.hits.as_ref().unwrap();
+        if hits.hits.is_none() {
+            return vec![];
+        }
+        let mut data = vec![];
         let hits = hits.hits.as_ref().unwrap();
-        for hit in hits{
-            if hit._source.is_some(){
+        for hit in hits {
+            if hit._source.is_some() {
                 data.push(hit._source.as_ref().unwrap());
             }
         }
@@ -82,7 +97,7 @@ pub struct Hit<T> {
 
 impl<T: std::default::Default> Hit<T> {
     pub fn index(&self) -> String {
-        if self._index.is_none(){
+        if self._index.is_none() {
             return "".to_string();
         }
         self._index.as_ref().unwrap().to_string()
@@ -96,7 +111,6 @@ impl<T: std::default::Default> Hit<T> {
     // pub fn score(&self) -> f32 {
     //     self.clone()._score.unwrap_or_default().clone()
     // }
-
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
