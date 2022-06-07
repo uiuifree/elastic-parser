@@ -14,6 +14,27 @@ pub struct SearchResponse<T, V = Value> {
     pub aggregations: Option<V>,
 }
 
+impl <T, V >SearchResponse<T, V> {
+    pub fn sources(&self)->Vec<&T>{
+        if self.hits.is_none(){
+            return  vec![];
+        }
+        let hits = self.hits.as_ref().unwrap();
+        if hits.hits.is_none(){
+            return vec![];
+        }
+        let mut  data  = vec![];
+        let hits = hits.hits.as_ref().unwrap();
+        for hit in hits{
+            if hit._source.is_some(){
+                data.push(hit._source.as_ref().unwrap());
+            }
+        }
+        data
+    }
+}
+
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct HitsTotal {
     #[serde(default)]
