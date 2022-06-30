@@ -155,3 +155,4 @@ impl<T> SearchResponse<T>
         hits.unwrap().hits.unwrap_or_default().to_vec()
     }
 }
+
