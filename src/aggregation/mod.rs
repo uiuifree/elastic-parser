@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-#[derive(Debug, Serialize, Deserialize)]
+
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct AggregationResponseParser {
     value: Value,
 }
@@ -11,7 +12,7 @@ impl AggregationResponseParser {
             value
         }
     }
-    pub fn value(&self)->Value{
+    pub fn value(&self) -> Value {
         self.value.clone()
     }
     pub fn doc_count(&self) -> Option<u64> {
@@ -20,7 +21,7 @@ impl AggregationResponseParser {
     pub fn sum_other_doc_count(&self) -> Option<u64> {
         parse_u32(self.value.get("sum_other_doc_count"))
     }
-    pub fn sub_aggregation<T:Into<String>>(&self, key: T) -> Option<AggregationResponseParser> {
+    pub fn sub_aggregation<T: Into<String>>(&self, key: T) -> Option<AggregationResponseParser> {
         let agg = self.value.get(key.into())?.clone();
         Some(AggregationResponseParser::new(agg))
     }
@@ -36,8 +37,7 @@ impl AggregationResponseParser {
 }
 
 
-#[derive(Debug)]
-
+#[derive(Debug, Default, Clone)]
 pub struct AggregationResponseBucket {
     value: Value,
 }
@@ -104,49 +104,49 @@ fn parse_u32(value: Option<&Value>) -> Option<u64> {
 }
 
 
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseTermAggregation<T: Default = ResponseBucket> {
-    pub doc_count_error_upper_bound: u32,
-    pub sum_other_doc_count: u32,
-    pub buckets: Vec<T>,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseBucket {
-    pub key: Option<String>,
-    pub doc_count: u32,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseCustomBucket<T> {
-    pub key: String,
-    pub doc_count: i32,
-    pub value: T,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseMultiTermAggregation<T: Default = ResponseMultiBucket> {
-    pub doc_count_error_upper_bound: u32,
-    pub sum_other_doc_count: u32,
-    pub buckets: Vec<T>,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseMultiBucket {
-    pub key_as_string: String,
-    pub doc_count: u32,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseCardinalityAggregation {
-    pub value: u32,
-}
-
-#[derive(Debug, Default, Clone, Deserialize, Serialize)]
-pub struct ResponseStatsAggregation {
-    pub count: i32,
-    pub min: f64,
-    pub max: f64,
-    pub avg: f64,
-    pub sum: f64,
-}
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseTermAggregation<T: Default = ResponseBucket> {
+//     pub doc_count_error_upper_bound: u32,
+//     pub sum_other_doc_count: u32,
+//     pub buckets: Vec<T>,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseBucket {
+//     pub key: Option<String>,
+//     pub doc_count: u32,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseCustomBucket<T> {
+//     pub key: String,
+//     pub doc_count: i32,
+//     pub value: T,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseMultiTermAggregation<T: Default = ResponseMultiBucket> {
+//     pub doc_count_error_upper_bound: u32,
+//     pub sum_other_doc_count: u32,
+//     pub buckets: Vec<T>,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseMultiBucket {
+//     pub key_as_string: String,
+//     pub doc_count: u32,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseCardinalityAggregation {
+//     pub value: u32,
+// }
+//
+// #[derive(Debug, Default, Clone, Deserialize, Serialize)]
+// pub struct ResponseStatsAggregation {
+//     pub count: i32,
+//     pub min: f64,
+//     pub max: f64,
+//     pub avg: f64,
+//     pub sum: f64,
+// }
