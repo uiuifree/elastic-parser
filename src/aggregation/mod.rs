@@ -59,8 +59,11 @@ impl AggregationResponseBucket {
         let key = self.value.get("key");
         if key.is_some() {
             let key = key.unwrap();
-            if key.is_string() || key.is_number() {
-                return Some(key.to_string());
+            if key.is_string() {
+                return Some(key.as_str().unwrap().to_string());
+            }
+            if  key.is_number(){
+                return Some(key.as_str().unwrap().to_string());
             }
         }
         return None;
