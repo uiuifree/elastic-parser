@@ -53,7 +53,7 @@ impl AggregationResponseBucket {
         if key_as_string.is_some() {
             let key_as_string = key_as_string.unwrap();
             if key_as_string.is_string() {
-                return Some(key_as_string.to_string());
+                return Some(key_as_string.as_str().unwrap().to_string());
             }
         }
         let key = self.value.get("key");
