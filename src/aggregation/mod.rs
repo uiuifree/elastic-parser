@@ -52,10 +52,13 @@ impl AggregationResponseBucket {
     pub fn value(&self) -> Value {
         self.value.clone()
     }
-    pub fn hits<T>(&self) -> Option<Hits<T>> {
+    pub fn hits(&self) -> Option<Hits<Value>> {
         let values = self.value.get("hits")?;
-        let hits = values.into();
-        return Some(hits);
+        let hits = serde_json::from_value::<Hits<Value>>(values.clone());
+        if hits.is_err(){
+            return None
+        }
+        return Some(hits.unwrap());
     }
     pub fn key(&self) -> Option<String> {
         let key_as_string = self.value.get("key_as_string");
