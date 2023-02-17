@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use crate::Hits;
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct AggregationResponseParser {
@@ -48,6 +49,14 @@ impl AggregationResponseBucket {
             value
         }
     }
+    pub fn value(&self) -> Value {
+        self.value.clone()
+    }
+    pub fn hits<T>(&self) -> Option<Hits<T>> {
+        let values = self.value.get("hits")?;
+        let hits = values.into();
+        return Some(hits);
+    }
     pub fn key(&self) -> Option<String> {
         let key_as_string = self.value.get("key_as_string");
         if key_as_string.is_some() {
@@ -62,7 +71,7 @@ impl AggregationResponseBucket {
             if key.is_string() {
                 return Some(key.as_str().unwrap().to_string());
             }
-            if  key.is_number(){
+            if key.is_number() {
                 return Some(key.as_str().unwrap().to_string());
             }
         }
