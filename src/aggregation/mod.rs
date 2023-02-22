@@ -104,6 +104,11 @@ impl AggregationResponseBucket {
     pub fn doc_count(&self) -> Option<u64> {
         parse_u32(self.value.get("doc_count"))
     }
+
+    pub fn sub_aggregation<T: Into<String>>(&self, key: T) -> Option<AggregationResponseParser> {
+        let agg = self.value.get(key.into())?.clone();
+        Some(AggregationResponseParser::new(agg))
+    }
 }
 
 
