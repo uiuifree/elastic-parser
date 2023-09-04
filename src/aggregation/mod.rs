@@ -1,6 +1,6 @@
+use crate::Hits;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use crate::Hits;
 
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct AggregationResponseParser {
@@ -9,9 +9,7 @@ pub struct AggregationResponseParser {
 
 impl AggregationResponseParser {
     pub fn new(value: Value) -> AggregationResponseParser {
-        AggregationResponseParser {
-            value
-        }
+        AggregationResponseParser { value }
     }
     pub fn value(&self) -> Value {
         self.value.clone()
@@ -37,7 +35,6 @@ impl AggregationResponseParser {
     }
 }
 
-
 #[derive(Debug, Default, Clone)]
 pub struct AggregationResponseBucket {
     value: Value,
@@ -45,9 +42,7 @@ pub struct AggregationResponseBucket {
 
 impl AggregationResponseBucket {
     pub fn new(value: Value) -> AggregationResponseBucket {
-        AggregationResponseBucket {
-            value
-        }
+        AggregationResponseBucket { value }
     }
     pub fn value(&self) -> Value {
         self.value.clone()
@@ -55,8 +50,8 @@ impl AggregationResponseBucket {
     pub fn hits(&self) -> Option<Hits<Value>> {
         let values = self.value.get("hits")?;
         let hits = serde_json::from_value::<Hits<Value>>(values.clone());
-        if hits.is_err(){
-            return None
+        if hits.is_err() {
+            return None;
         }
         return Some(hits.unwrap());
     }
@@ -111,7 +106,6 @@ impl AggregationResponseBucket {
     }
 }
 
-
 fn parse_u32(value: Option<&Value>) -> Option<u64> {
     if value.is_none() {
         return None;
@@ -122,7 +116,6 @@ fn parse_u32(value: Option<&Value>) -> Option<u64> {
     }
     return None;
 }
-
 
 // #[derive(Debug, Default, Clone, Deserialize, Serialize)]
 // pub struct ResponseTermAggregation<T: Default = ResponseBucket> {

@@ -6,7 +6,7 @@ extern crate serde_derive;
 extern crate serde_json;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SearchResponse<T:Clone> {
+pub struct SearchResponse<T: Clone> {
     #[serde(default)]
     pub _scroll_id: Option<String>,
     #[serde(default)]
@@ -16,7 +16,7 @@ pub struct SearchResponse<T:Clone> {
     pub aggregations: Option<Value>,
 }
 
-impl<T:Clone> SearchResponse<T> {
+impl<T: Clone> SearchResponse<T> {
     pub fn total_value(&self) -> usize {
         if self.hits.is_none() {
             return 0;
@@ -64,14 +64,15 @@ impl<T:Clone> SearchResponse<T> {
         }
         data
     }
-    pub fn aggregations(&self)->Option<AggregationResponseParser>{
-        if self.aggregations.is_none(){
-            return None
+    pub fn aggregations(&self) -> Option<AggregationResponseParser> {
+        if self.aggregations.is_none() {
+            return None;
         }
-        Some(AggregationResponseParser::new(self.aggregations.clone().unwrap()))
+        Some(AggregationResponseParser::new(
+            self.aggregations.clone().unwrap(),
+        ))
     }
 }
-
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct HitsTotal {
@@ -82,7 +83,7 @@ pub struct HitsTotal {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Hits<T:Clone> {
+pub struct Hits<T: Clone> {
     pub total: Option<HitsTotal>,
     pub max_score: Option<f32>,
     pub hits: Option<Vec<Hit<T>>>,
@@ -106,7 +107,10 @@ pub struct Hits<T:Clone> {
 // }
 
 #[derive(Debug, Serialize, Deserialize, Default, Clone)]
-pub struct Hit<T> where T: Clone {
+pub struct Hit<T>
+where
+    T: Clone,
+{
     #[serde(default)]
     pub _index: Option<String>,
     #[serde(default)]
@@ -156,21 +160,20 @@ pub struct Shards {
     pub failed: Option<usize>,
 }
 
-
+use crate::aggregation::AggregationResponseParser;
 use serde::de;
 use serde_json::Value;
-use crate::aggregation::AggregationResponseParser;
 
 pub fn parse<'a, T>(s: &'a str) -> T
-    where
-        T: de::Deserialize<'a>,
+where
+    T: de::Deserialize<'a>,
 {
     serde_json::from_str(s).expect("")
 }
 
 impl<T> SearchResponse<T>
-    where
-        T: std::clone::Clone,
+where
+    T: std::clone::Clone,
 {
     pub fn to_hit(&self) -> Vec<Hit<T>> {
         let hits = self.hits.clone();
@@ -180,4 +183,3 @@ impl<T> SearchResponse<T>
         hits.unwrap().hits.unwrap_or_default().to_vec()
     }
 }
-
