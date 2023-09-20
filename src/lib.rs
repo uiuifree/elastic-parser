@@ -1,8 +1,6 @@
 pub mod aggregation;
 
 extern crate serde;
-#[macro_use]
-extern crate serde_derive;
 extern crate serde_json;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -161,7 +159,7 @@ pub struct Shards {
 }
 
 use crate::aggregation::AggregationResponseParser;
-use serde::de;
+use serde::{de, Deserialize, Serialize};
 use serde_json::Value;
 
 pub fn parse<'a, T>(s: &'a str) -> T
